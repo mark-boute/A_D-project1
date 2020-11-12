@@ -32,25 +32,23 @@ Part 4: Girvan-Newman
     4. recalculate connected components
 """
 
-from numpy import mat
-
 
 # Part 1: Calculate the number of edges in the graph
-def __edges_in_graph(graph: mat):
-    return graph.getA1().sum()
+def __edges_in_graph(adj_mat):
+    return adj_mat.getA1().sum()
 
 
 # Part 2: Connected components
-def __get_connected_components(graph: mat):
+def __get_connected_components(adj_mat):
     pass
 
 
 # Part 3: Edge betweenness
-def __edge_betweenness(graph: mat):
+def __edge_betweenness(adj_mat):
     # for v in V:
-    for row in range(graph.size[0]):
-        for col in range(graph.size[0]):
-            if mat.item((row, col)) == 1:
+    for row in range(adj_mat.size[0]):
+        for col in range(adj_mat.size[0]):
+            if adj_mat[row][col] == 1:
                 # do
                 pass
 
@@ -59,27 +57,27 @@ def __edge_betweenness(graph: mat):
     while S:
         # pop w <- S
 
-
+        pass
         # for v in Pred[w] do:
 
 
-
 # Part 4: Girvan-Newman
-def girvan_newman(graph: mat, clusters: int, edges=None):
+def girvan_newman(adj_mat, clusters: int, edges=None):
     """
     Splits graph into $clusters$ or more relatively dense components
 
-    :param graph: adjacency matrix representing graph
+    :param adj_mat: adjacency matrix representing graph
     :param clusters: number of desired clusters
     :param OPTIONAL edges: number of edges in the graph
-    :return: clusters of nodes as a list of tuples, the amount of clusters may be higher that originally specified.
+    :return: clusters of nodes as a list of tuples,
+            the amount of clusters may be higher that originally specified.
     """
     # if no edges, then return. * No clusters *
-    if graph.max() == 0:
+    if adj_mat.max() == 0:
         return
 
     # protect graph data by making a copy.
-    graph = graph.copy()
+    graph = adj_mat.copy()
 
     # 1. while number of connected sub-graphs < specified number of clusters
     #    and the number of edges in graph > 0:
