@@ -9,8 +9,6 @@ Subpart:
 Parse any received input and turn them into useful objects here
 """
 
-from numpy import mat
-
 
 def create_adjacency_matrix(edges: int, vertices):
     """
@@ -19,14 +17,14 @@ def create_adjacency_matrix(edges: int, vertices):
     :param vertices: a list of tuples containing connections of a vertex
     :return: numpy.mat
     """
-    _mat = []
+    mat = []
     for _ in range(edges):
         empty_arr = []
         for _ in range(edges):
             empty_arr.append(0)
-        _mat.append(empty_arr)
+        mat.append(empty_arr)
 
     for vertex in vertices:
-        _mat[vertex[0]][vertex[1]] = 1
+        mat[vertex[0]][vertex[1]] = 1
 
-    return mat(_mat)
+    return mat
