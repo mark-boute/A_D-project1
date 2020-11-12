@@ -42,13 +42,13 @@ def get_input():
 
 def get_vertices(edges: int):
     """
-
+    get vertices from input
     :param edges: how many rows of input should be read
     :return: V, list of edge tuples.
     """
     vertices = []
     for _ in range(edges):
-        vertex_input = input().split()
+        vertex_input = [int(i) for i in input().split()]
         vertices.append(tuple(vertex_input))
 
     return vertices

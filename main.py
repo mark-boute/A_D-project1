@@ -17,6 +17,7 @@ from __future__ import print_function
 import sys
 
 from common.input import get_input
+from common.parser import create_adjacency_matrix
 
 
 def e_print(*args, **kwargs):
@@ -28,4 +29,5 @@ def e_print(*args, **kwargs):
 
 
 for _ in range(int(input())):
-    e_print(get_input())
+    _input = get_input()
+    adjacency_mat = create_adjacency_matrix(_input["edges"], _input["vertices"])
