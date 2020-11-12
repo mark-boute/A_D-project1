@@ -35,7 +35,10 @@ Part 4: Girvan-Newman
 
 # Part 1: Calculate the number of edges in the graph
 def __edges_in_graph(adj_mat):
-    return adj_mat.getA1().sum()
+    _sum = 0
+    for row in adj_mat:
+        _sum += sum(row)
+    return _sum
 
 
 # Part 2: Connected components
