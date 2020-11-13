@@ -31,68 +31,65 @@ Part 4: Girvan-Newman
     3. remove edge(s) with highest betweenness
     4. recalculate connected components
 """
+from common.e_print import e_print
 
 
-# Part 1: Calculate the number of edges in the graph
-def __edges_in_graph(adj_mat):
-    _sum = 0
+def __shortest_paths(adj_mat, node, no_of_nodes):
+    nodes_to_evaluate = []
+    shortest_paths = []
+    for n in range(no_of_nodes):
+        nodes_to_evaluate.append(n)
+        shortest_paths.append(0)
+
+    nodes_to_evaluate.remove(node)
+    shortest_paths[node] = 0
+
+    found_new_nodes = True
+    level_nodes = [node]
+    while nodes_to_evaluate and found_new_nodes:
+        found_new_nodes = False
+        evaluated = []
+        for level_node in level_nodes:
+            for adj_mat_node in nodes_to_evaluate:
+                if len(adj_mat) <= level_node:
+                    e_print("row", len(adj_mat), level_node)
+                if len(adj_mat[level_node]) <= adj_mat_node:
+                    e_print("col", len(adj_mat[level_node]), adj_mat_node)
+
+                if adj_mat[level_node][adj_mat_node] == 1:
+                    shortest_paths[adj_mat_node] += 1
+                    if adj_mat_node not in evaluated:
+                        evaluated.append(adj_mat_node)
+        for e in evaluated:
+            if e in nodes_to_evaluate:
+                nodes_to_evaluate.remove(e)
+                found_new_nodes = True
+        level_nodes = evaluated
+        e_print("Nodes to eval = " + str(len(nodes_to_evaluate)))
+
+    for not_connected in nodes_to_evaluate:
+        shortest_paths[not_connected] = -1
+
+    levellist = []
+    for _ in range(max(shortest_paths)+1):
+        levellist.append([])
+
+    for i in range(len(shortest_paths)):
+        if shortest_paths[i] >= 0:
+            levellist[shortest_paths[i]].append(i)
+
+    for level in levellist:
+        e_print(level)
+
+    return shortest_paths
+
+
+def tests(adj_mat, node, no_of_nodes):
+    current_max = 0
     for row in adj_mat:
-        _sum += sum(row)
-    return _sum
-
-
-# Part 2: Connected components
-def __get_connected_components(adj_mat):
-    pass
-
-
-# Part 3: Edge betweenness
-def __edge_betweenness(adj_mat):
-    # for v in V:
-    for row in range(adj_mat.size[0]):
-        for col in range(adj_mat.size[0]):
-            if adj_mat[row][col] == 1:
-                # do
-                pass
-
-    S = ["to", "be", "determined"]
-    # while S not empty do:
-    while S:
-        # pop w <- S
-
-        pass
-        # for v in Pred[w] do:
-
-
-# Part 4: Girvan-Newman
-def girvan_newman(adj_mat, clusters: int, edges=None):
-    """
-    Splits graph into $clusters$ or more relatively dense components
-
-    :param adj_mat: adjacency matrix representing graph
-    :param clusters: number of desired clusters
-    :param OPTIONAL edges: number of edges in the graph
-    :return: clusters of nodes as a list of tuples,
-            the amount of clusters may be higher that originally specified.
-    """
-    # if no edges, then return. * No clusters *
-    if adj_mat.max() == 0:
-        return
-
-    # protect graph data by making a copy.
-    graph = adj_mat.copy()
-
-    # 1. while number of connected sub-graphs < specified number of clusters
-    #    and the number of edges in graph > 0:
-    connected_sub_graphs = 0
-    while connected_sub_graphs < clusters and graph.max() > 0:
-        # 2. calculate edge betweenness for every edge in the graph
-        edge_betweenness(graph)
-
-        # 3. remove edge(s) with highest betweenness
-
-        # 4. recalculate connected components
-
-
-def edge_betweenness(graph):
-    pass
+        if max(row) == 1:
+            current_max = 1
+            break
+    if current_max == 0 or no_of_nodes > 100:
+        return "No connections or too large"
+    return __shortest_paths(adj_mat, node, no_of_nodes)
