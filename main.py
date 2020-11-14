@@ -50,7 +50,7 @@ for i in range(int(input())):
     adjacency_mat = None
     gc.collect()
 
-    if _input["infect_contact"] <= 0.5:
+    if _input["infect_contact"] <= .5:
 
         # determine amount of clusters to be tested he
         cluster_size = 2**floor(log2(_input["nodes"]/_input["upper_bound"]-1))
@@ -82,10 +82,50 @@ for i in range(int(input())):
         # test
         cases = []
         for cluster in clusters:
+
+            sub_clusters = []
+            for _ in range(ceil(len(cluster)/cluster_size)):
+                sub_clusters.append([])
+            n = 0
+            while n < len(cluster):
+                sub_clusters[floor(n / cluster_size)].append(cluster[n])
+                n += 1
+            if len(sub_clusters[-1]) < 4:
+                for n in sub_clusters[-1]:
+                    sub_clusters[-2].append(n)
+                    del sub_clusters[-1]
+
+            for sub_cluster in sub_clusters:
+                binary_search(sub_cluster, cases, _input["upper_bound"])
+                gc.collect()
+
+        e_print("Cluster tested: " + answer(cases))
+
+    elif _input["infect_contact"] <= .5 and False:
+        # determine amount of clusters to be tested he
+
+        nodes = [n for n in range(_input["nodes"])]
+
+        cluster_size = 2**floor(log2(_input["nodes"]/_input["upper_bound"]-1))
+        if cluster_size < 4:
+            cluster_size = 4
+        no_of_clusters = ceil(_input["nodes"]/cluster_size)
+
+        clusters = []
+        for _ in range(no_of_clusters):
+            clusters.append([])
+
+        n = 0
+        while n < _input["nodes"]:
+            clusters[floor(n/cluster_size)].append(n)
+            n += 1
+
+        cases = []
+        for cluster in clusters:
             binary_search(cluster, cases, _input["upper_bound"])
             gc.collect()
 
-        e_print("Cluster tested: " + answer(cases))
+        e_print("Naive Cluster tested: " + answer(cases))
 
     else:
         # test individually
@@ -96,3 +136,4 @@ for i in range(int(input())):
 
         # send answer
         e_print("Individually tested: " + answer(cases))
+
