@@ -101,32 +101,6 @@ for i in range(int(input())):
 
         e_print("Cluster tested: " + answer(cases))
 
-    elif _input["infect_contact"] <= .5 and False:
-        # determine amount of clusters to be tested he
-
-        nodes = [n for n in range(_input["nodes"])]
-
-        cluster_size = 2**floor(log2(_input["nodes"]/_input["upper_bound"]-1))
-        if cluster_size < 4:
-            cluster_size = 4
-        no_of_clusters = ceil(_input["nodes"]/cluster_size)
-
-        clusters = []
-        for _ in range(no_of_clusters):
-            clusters.append([])
-
-        n = 0
-        while n < _input["nodes"]:
-            clusters[floor(n/cluster_size)].append(n)
-            n += 1
-
-        cases = []
-        for cluster in clusters:
-            binary_search(cluster, cases, _input["upper_bound"])
-            gc.collect()
-
-        e_print("Naive Cluster tested: " + answer(cases))
-
     else:
         # test individually
         cases = []
