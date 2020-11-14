@@ -8,6 +8,7 @@ Mark de Jong    s1034829
 Subpart:
 Contains functions for reading the input from the server.
 """
+from common.e_print import e_print
 
 
 def get_input():
@@ -36,7 +37,6 @@ def get_input():
     assert 0 < _input["lower_bound"] <= _input["upper_bound"]
 
     _input["vertices"] = get_vertices(_input["edges"])
-
     return _input
 
 
@@ -49,6 +49,7 @@ def get_vertices(edges: int):
     vertices = []
     for _ in range(edges):
         vertex_input = [int(i) for i in input().split()]
-        vertices.append(tuple(vertex_input))
+        if not vertex_input[0] == vertex_input[1]:
+            vertices.append(tuple(vertex_input))
 
     return vertices
