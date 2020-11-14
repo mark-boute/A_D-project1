@@ -22,7 +22,7 @@ from common.input import get_input
 from common.parser import create_adjacency_matrix
 from common.communities import get_unconnected_graphs
 from common.binary_search import old_binary_search
-from common.test import answer
+from common.test import answer, test
 
 
 # for the number of inputs given by the first input
@@ -44,6 +44,9 @@ for i in range(int(input())):
     if not _input["vertices"] == 0:
         communities = get_unconnected_graphs(adjacency_mat, [n for n in range(_input["nodes"])])
 
+    if not communities:
+        communities = [n for n in range(_input["nodes"])]
+
     # clear some memory
     adjacency_mat = None
     gc.collect()
@@ -57,29 +60,36 @@ for i in range(int(input())):
         no_of_clusters = ceil(_input["nodes"]/cluster_size)
 
         clusters = []
-        for _ in range(no_of_clusters):
-            clusters.append([])
+        small_communities = []
+        for community in communities:
+            if isinstance(community, int):
+                community = [community]
+            if len(community) >= cluster_size:
+                clusters.append(community)
+            else:
+                small_communities.append(community)
 
-        n = 0
-        while n < _input["nodes"]:
-            clusters[floor(n/cluster_size)].append(n)
-            n += 1
+        small_clustered = []
+        for small in small_communities:
+            for n in small:
+                small_clustered.append(n)
 
-        # test clusters
+        while len(small_clustered) >= 2*cluster_size:
+            clusters.append(small_clustered[:cluster_size])
+            for _ in range(cluster_size):
+                del small_clustered[0]
+        clusters.append(small_clustered)
+
+        if _input["vertices"] == 0:
+            e_print(clusters)
+
+        # test
         cases = []
         for cluster in clusters:
             old_binary_search(cluster, cases, _input["upper_bound"])
             gc.collect()
 
-        e_print(answer(cases))
-
-        # e_print(tests(adjacency_mat, 0, _input["nodes"]))
-
-        # evaluate no_of_clusters again because we may have received more clusters than specified
-        # no_of_clusters = len(clusters)
-
-        #for cluster in clusters:
-        #   e_print(str(i) + ":\t" + run_bin(cluster, _input["upper_bound"]) + " / " + str(_input["nodes"]))
+        e_print("Cluster tested: " + answer(cases))
 
     else:
         # test individually
@@ -90,4 +100,4 @@ for i in range(int(input())):
                 cases.append(n)
 
         # send answer
-        e_print(answer(cases))
+        e_print("Individually tested: " + answer(cases))

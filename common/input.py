@@ -23,7 +23,6 @@ def get_input():
 
     _input["nodes"] = int(input())
     _input["edges"] = int(input())
-    e_print(_input["nodes"], _input["edges"])
     _input["infected"] = int(input())
     _input["infect_contact"] = float(input())
 
@@ -38,7 +37,6 @@ def get_input():
     assert 0 < _input["lower_bound"] <= _input["upper_bound"]
 
     _input["vertices"] = get_vertices(_input["edges"])
-
     return _input
 
 
