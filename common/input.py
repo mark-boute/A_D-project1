@@ -8,6 +8,7 @@ Mark de Jong    s1034829
 Subpart:
 Contains functions for reading the input from the server.
 """
+from common.e_print import e_print
 
 
 def get_input():
@@ -22,6 +23,7 @@ def get_input():
 
     _input["nodes"] = int(input())
     _input["edges"] = int(input())
+    e_print(_input["nodes"], _input["edges"])
     _input["infected"] = int(input())
     _input["infect_contact"] = float(input())
 
@@ -49,6 +51,7 @@ def get_vertices(edges: int):
     vertices = []
     for _ in range(edges):
         vertex_input = [int(i) for i in input().split()]
-        vertices.append(tuple(vertex_input))
+        if not vertex_input[0] == vertex_input[1]:
+            vertices.append(tuple(vertex_input))
 
     return vertices
