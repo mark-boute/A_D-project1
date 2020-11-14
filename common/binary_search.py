@@ -11,30 +11,22 @@ Subpart: Binary Search
 from common.test import test
 
 
-def binary_search(cluster, to_be_examined, cases):
-    # return list of cases
+def b_binary_search(nodes):
+    if len(nodes) == 1:
+        return nodes[0]
 
-    # base_case
-    if len(cluster) == 1:
-        del to_be_examined[0]
-        cases.append(cluster[0])
-        if len(to_be_examined) > 0:
-            if test(to_be_examined):
-                binary_search(cluster, to_be_examined, cases)
-
-    # recursive case
+    middle_index = len(nodes) // 2
+    a = nodes[:middle_index]
+    b = nodes[middle_index:]
+    if test(a):
+        return b_binary_search(a)
     else:
-        middle_index = len(cluster) // 2
-        first_half = cluster[:middle_index]
-        second_half = cluster[middle_index:]
-        if test(first_half):
-            binary_search(first_half, to_be_examined, cases)
-        else:
-            if test(second_half):
-                binary_search(second_half, to_be_examined, cases)
+        for n in a:
+            nodes.remove(n)
+        return b_binary_search(b)
 
 
-def old_binary_search(nodes, positive_cases, infected):
+def binary_search(nodes, positive_cases, infected):
     if len(positive_cases) >= infected:
         return
 
@@ -53,6 +45,6 @@ def old_binary_search(nodes, positive_cases, infected):
         first_half = nodes[:middle_index]
         second_half = nodes[middle_index:]
         if test(first_half):
-            old_binary_search(first_half, positive_cases, infected)
+            binary_search(first_half, positive_cases, infected)
         if test(second_half):
-            old_binary_search(second_half, positive_cases, infected)
+            binary_search(second_half, positive_cases, infected)

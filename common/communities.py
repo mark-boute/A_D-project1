@@ -5,33 +5,8 @@ Practicum 1
 Mark Boute      s1038503
 Mark de Jong    s1034829
 
-Subpart:
-This part contains the implementation of the Girvan-Newman algorithm
-( https://en.wikipedia.org/wiki/Girvan%E2%80%93Newman_algorithm )
-
-Pseudocode is a subset from ( https://www.cl.cam.ac.uk/teaching/1718/MLRD/tasks/task12.html ):
-
-Part 1: Calculate the number of edges in the graph
-    Determine the number of edges in the graph.
-
-Part 2: Connected components
-    Implement a depth-first search algorithm to check for connectivity
-    and then use it to find all connected components in the graph.
-    (Two nodes are in the same connected component iff there is a path between them.)
-
-Part 3: Edge betweenness
-    Implement edge betweenness.
-    ( As by pseudocode givin in section 3.5 from
-        http://www.sciencedirect.com/science/article/pii/S0378873307000731 )
-
-Part 4: Girvan-Newman
-    1. while number of connected sub-graphs < specified number of clusters
-       and the number of edges in graph > 0:
-    2. calculate edge betweenness for every edge in the graph
-    3. remove edge(s) with highest betweenness
-    4. recalculate connected components
+Subpart: Find unconnected communities in graphs
 """
-from common.e_print import e_print
 
 
 def get_shortest_paths(adj_mat, node, nodes):
@@ -83,15 +58,4 @@ def get_unconnected_graphs(adj_mat, nodes_in):
         communities.append(community)
         nodes = unconnected
 
-    # e_print("Communities:")
-    # e_print(communities)
     return communities
-
-
-def tests(adj_mat, node, no_of_nodes):
-    current_max = 0
-    for row in adj_mat:
-        if max(row) == 1:
-            current_max = 1
-            break
-    return get_shortest_paths(adj_mat, node, no_of_nodes)

@@ -21,7 +21,7 @@ from common.e_print import e_print
 from common.input import get_input
 from common.parser import create_adjacency_matrix
 from common.communities import get_unconnected_graphs
-from common.binary_search import old_binary_search
+from common.binary_search import binary_search
 from common.test import answer, test
 
 
@@ -35,13 +35,12 @@ for i in range(int(input())):
     adjacency_mat = create_adjacency_matrix(_input["edges"], _input["vertices"])
 
     # clear some memory
-    _input["vertices"] = len(_input["vertices"])
-    e_print(_input["vertices"])
+    _input["vertices"] = None
     gc.collect()
 
     communities = None
     # get a list of unconnected graphs
-    if not _input["vertices"] == 0:
+    if _input["vertices"]:
         communities = get_unconnected_graphs(adjacency_mat, [n for n in range(_input["nodes"])])
 
     if not communities:
@@ -54,7 +53,7 @@ for i in range(int(input())):
     if _input["infect_contact"] <= 0.5:
 
         # determine amount of clusters to be tested he
-        cluster_size = 2**floor(log2(1/_input["infect_contact"]-1))
+        cluster_size = 2**floor(log2(_input["nodes"]/_input["upper_bound"]-1))
         if cluster_size < 4:
             cluster_size = 4
         no_of_clusters = ceil(_input["nodes"]/cluster_size)
@@ -80,13 +79,10 @@ for i in range(int(input())):
                 del small_clustered[0]
         clusters.append(small_clustered)
 
-        if _input["vertices"] == 0:
-            e_print(clusters)
-
         # test
         cases = []
         for cluster in clusters:
-            old_binary_search(cluster, cases, _input["upper_bound"])
+            binary_search(cluster, cases, _input["upper_bound"])
             gc.collect()
 
         e_print("Cluster tested: " + answer(cases))
@@ -95,8 +91,7 @@ for i in range(int(input())):
         # test individually
         cases = []
         for n in range(_input["nodes"]):
-            print("test " + str(n))
-            if input() == "true":
+            if test(n):
                 cases.append(n)
 
         # send answer
